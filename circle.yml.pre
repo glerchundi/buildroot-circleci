@@ -16,4 +16,4 @@ rm toolchain-v*.tar*
 ln -s toolchain-v* toolchain
 
 # copy default defconfig to buildroot root
-cp $CIRCLE_ARTIFACTS/defconfig ~/buildroot/.defconfig
+cp ${CIRCLE_PROJECT_REPONAME}/defconfig ~/buildroot/.defconfig
