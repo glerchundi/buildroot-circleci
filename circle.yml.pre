@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# move to $HOME
+cd ${HOME}
+
+# download/untar/verify/prepare buildroot
+wget -nv https://github.com/saltosystems/buildroot/releases/download/v$BR_RELEASE/buildroot-$BR_RELEASE.tar.bz2
+tar xf buildroot-*.tar*
+rm buildroot-*.tar*
+ln -s buildroot-* buildroot
+
+# download/untar toolchain
+wget -nv https://github.com/saltosystems/buildroot-crosstool-ng/releases/download/v$CT_RELEASE/toolchain-v$CT_RELEASE.tar.gz
+tar xf toolchain-v*.tar.gz
+rm toolchain-v*.tar*
+ln -s toolchain-v* toolchain
+
+# copy default defconfig to buildroot root
+cp $CIRCLE_ARTIFACTS/defconfig ~/buildroot/.defconfig

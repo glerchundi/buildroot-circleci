@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# move to buildroot root
+cd ~/buildroot
+
+# create one defconfig per output type (gz,bz2,xz,...)
+bash -e defconfig-per-output-splitter
+
+# loop over rendered defconfigs
+for i in .defconfig.rendered.*; do
+  # compile & output 
+  make defconfig BR2_DEFCONFIG=${i}
+  make 2> ~/stderr.${i}.log | tee ~/stdout.${i}.log | grep -i -e "^.*:" | grep -v "gcc" | grep -v "g++"
+done
