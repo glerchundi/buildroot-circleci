@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# don't loop if files don't exist
+shopt -s nullglob
+
+# move to home
+cd ~
+
+# download and untar github-release
+wget -nv -O github-release.amd64.tar.bz2 https://github.com/aktau/github-release/releases/download/v0.5.3/linux-amd64-github-release.tar.bz2
+tar xf github-release.amd64.tar.bz2 --strip-components=3
+
+# get user and repo names
+USERNAME=${CIRCLE_PROJECT_USERNAME}
+REPONAME=${CIRCLE_PROJECT_REPONAME}
+TAG=${CIRCLE_BRANCH}
+
+# release this :-)
+./github-release release --user "${USERNAME}" --repo "${REPONAME}" --tag "${TAG}" --name "${TAG}"
+for i in ~/buildroot/output/images/rootfs.tar.*; do
+  bn=$(basename ${i})
+  name=${REPONAME}-${TAG}-${bn}
+  ./github-release upload --user "${USERNAME}" --repo "${REPONAME}" --tag "${TAG}" --name "${name}" --file "${i}"
+done
