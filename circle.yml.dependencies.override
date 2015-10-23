@@ -10,5 +10,5 @@ bash -e defconfig-per-output-splitter
 for i in .defconfig.rendered.*; do
   # compile & output 
   make defconfig BR2_DEFCONFIG=${i}
-  make 2> ~/stderr.${i}.log | tee ~/stdout.${i}.log | grep -i -e "^.*:" | grep -v "gcc" | grep -v "g++"
+  make 2> ~/stderr.${i}.log | tee ~/stdout.${i}.log
 done
